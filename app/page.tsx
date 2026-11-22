@@ -42,7 +42,7 @@ export default function HomePage() {
       {/* 3. NAVIGATION BAR */}
       <Navbar />
 
-      <main className="bg-[#FBF8F3] text-[#161112] relative overflow-x-clip">
+      <main className="bg-[#FBF8F3] text-[#161112] relative">
         {/* =========================================================================
             01. FULL-WIDTH CINEMATIC HERO (Video Background + Floating Search Dock)
             ========================================================================= */}
