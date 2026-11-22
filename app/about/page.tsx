@@ -204,24 +204,27 @@ export default function AboutPage() {
 
           {/* =========================================================================
               SECTION 3: ANIMATED NUMERIC STATS TICKER
+              (Mobile: 2x2 grid — 2 cards in first row, 2 cards in second row)
               ========================================================================= */}
-          <div className="about-fade-up grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="about-fade-up grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {STATS_DATA.map((item, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-2xl border border-[#E8DCC8] p-6 sm:p-8 shadow-2xs hover:shadow-md transition-all space-y-3"
+                className="bg-white rounded-xl sm:rounded-2xl border border-[#E8DCC8] p-4 sm:p-8 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between space-y-2 sm:space-y-3"
               >
-                <div className="font-serif text-4xl sm:text-5xl font-bold text-[#6D1A2B] flex items-baseline">
-                  <span>{item.prefix}</span>
-                  <span className="stat-counter" data-value={item.value}>
-                    0
-                  </span>
-                  <span>{item.suffix}</span>
+                <div>
+                  <div className="font-serif text-2xl xs:text-3xl sm:text-5xl font-bold text-[#6D1A2B] flex items-baseline flex-wrap">
+                    <span>{item.prefix}</span>
+                    <span className="stat-counter" data-value={item.value}>
+                      0
+                    </span>
+                    <span>{item.suffix}</span>
+                  </div>
+                  <h4 className="text-[10px] sm:text-xs uppercase tracking-[0.12em] sm:tracking-[0.16em] font-bold text-[#161112] mt-1 sm:mt-1.5 leading-snug">
+                    {item.label}
+                  </h4>
                 </div>
-                <h4 className="text-xs uppercase tracking-[0.16em] font-bold text-[#161112]">
-                  {item.label}
-                </h4>
-                <p className="text-xs text-[#6B6265] leading-relaxed">
+                <p className="text-[10px] sm:text-xs text-[#6B6265] leading-relaxed line-clamp-3 sm:line-clamp-none">
                   {item.desc}
                 </p>
               </div>
