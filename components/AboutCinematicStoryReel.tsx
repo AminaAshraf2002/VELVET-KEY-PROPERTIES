@@ -223,7 +223,7 @@ export function AboutCinematicStoryReel() {
   return (
     <div
       ref={containerRef}
-      className="w-full bg-white rounded-3xl border border-[#E8DCC8] p-6 sm:p-10 lg:p-12 shadow-sm space-y-10 select-none overflow-hidden"
+      className="w-full bg-white rounded-2xl sm:rounded-3xl border border-[#E8DCC8] p-3.5 sm:p-10 lg:p-12 shadow-sm space-y-6 sm:space-y-10 select-none overflow-hidden"
     >
       {/* Top Header Bar */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[#E8DCC8]/60">

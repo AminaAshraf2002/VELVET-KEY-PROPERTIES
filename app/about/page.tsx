@@ -136,8 +136,8 @@ export default function AboutPage() {
         breadcrumbs={[{ label: "HOME", href: "/" }, { label: "OUR PEDIGREE" }]}
       />
 
-      <main className="min-h-screen bg-[#FBF8F3] pt-6 sm:pt-12 pb-24 px-4 sm:px-6 lg:px-8 text-[#161112]">
-        <div ref={containerRef} className="max-w-7xl mx-auto space-y-16 sm:space-y-24">
+      <main className="min-h-screen bg-[#FBF8F3] pt-6 sm:pt-12 pb-24 px-2.5 sm:px-6 lg:px-8 text-[#161112]">
+        <div ref={containerRef} className="max-w-7xl mx-auto space-y-12 sm:space-y-24">
 
           {/* =========================================================================
               SECTION 1: CINEMATIC ARCHITECTURAL STORY REEL & CHAPTER VAULT
@@ -150,9 +150,9 @@ export default function AboutPage() {
           {/* =========================================================================
               SECTION 2: EDITORIAL PEDIGREE STORY & PRIVATE VAULT REVEAL
               ========================================================================= */}
-          <div className="about-fade-up bg-white rounded-3xl border border-[#E8DCC8] p-8 sm:p-14 shadow-sm hover:shadow-md transition-shadow">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-              <div className="lg:col-span-7 space-y-5 text-sm sm:text-base text-[#6B6265] leading-relaxed">
+          <div className="about-fade-up bg-white rounded-2xl sm:rounded-3xl border border-[#E8DCC8] p-4 sm:p-10 lg:p-14 shadow-sm hover:shadow-md transition-shadow">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+              <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-sm sm:text-base text-[#6B6265] leading-relaxed">
                 <span className="label-tracking text-[10px] text-[#9B2640] block font-semibold">
                   SWISS FIDUCIARY STANDARD IN DUBAI
                 </span>
@@ -167,7 +167,7 @@ export default function AboutPage() {
                 <p>
                   Over 45% of Velvet Key transactions take place completely off-market. We do not distribute public brochures or conduct mass marketing for our private vault mandates. Instead, transactions are facilitated through private introductions directly between verified principals.
                 </p>
-                <div className="pt-2 flex flex-wrap gap-4 text-xs font-mono text-[#6D1A2B]">
+                <div className="pt-2 flex flex-wrap gap-2.5 sm:gap-4 text-xs font-mono text-[#6D1A2B]">
                   <span className="px-3 py-1.5 rounded-full bg-[#FBF8F3] border border-[#E8DCC8]">
                     ✦ RERA ORN: 29481
                   </span>
@@ -181,20 +181,20 @@ export default function AboutPage() {
               </div>
 
               {/* Private Vault Protocol Callout Card */}
-              <div className="lg:col-span-5 h-80 rounded-2xl bg-gradient-to-tr from-[#161112] via-[#4A0F1C] to-[#6D1A2B] p-8 flex flex-col justify-between text-white border border-[#9B2640]/40 shadow-xl relative overflow-hidden group">
+              <div className="lg:col-span-5 h-72 sm:h-80 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-[#161112] via-[#4A0F1C] to-[#6D1A2B] p-6 sm:p-8 flex flex-col justify-between text-white border border-[#9B2640]/40 shadow-xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-48 h-48 bg-[#9B2640]/20 rounded-full blur-3xl pointer-events-none" />
                 <span className="label-tracking text-[10px] text-[#E8DCC8]">
                   PRIVATE VAULT PROTOCOL
                 </span>
                 <div>
-                  <span className="font-serif text-4xl sm:text-5xl font-bold block mb-2 text-white">
+                  <span className="font-serif text-3xl sm:text-5xl font-bold block mb-1.5 sm:mb-2 text-white">
                     AED 4.2B+
                   </span>
                   <span className="text-xs text-[#E8DCC8]/85 leading-relaxed block font-light">
                     Confidential transaction volume executed under strict NDA custody across Palm Jumeirah Signature Fronds, Emirates Hills Mansions, and Jumeirah Bay Island.
                   </span>
                 </div>
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-[#E8DCC8]">
+                <div className="pt-3 sm:pt-4 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-[#E8DCC8]">
                   <span>Fiduciary Shielding</span>
                   <span>DIFC Compliant →</span>
                 </div>
@@ -206,11 +206,11 @@ export default function AboutPage() {
               SECTION 3: ANIMATED NUMERIC STATS TICKER
               (Mobile: 2x2 grid — 2 cards in first row, 2 cards in second row)
               ========================================================================= */}
-          <div className="about-fade-up grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="about-fade-up grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
             {STATS_DATA.map((item, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-xl sm:rounded-2xl border border-[#E8DCC8] p-4 sm:p-8 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between space-y-2 sm:space-y-3"
+                className="bg-white rounded-xl sm:rounded-2xl border border-[#E8DCC8] p-3 sm:p-6 lg:p-8 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between space-y-1.5 sm:space-y-3"
               >
                 <div>
                   <div className="font-serif text-2xl xs:text-3xl sm:text-5xl font-bold text-[#6D1A2B] flex items-baseline flex-wrap">
@@ -437,13 +437,15 @@ export default function AboutPage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-8">
               {LEADERSHIP_PARTNERS.map((partner, idx) => (
                 <div
                   key={idx}
-                  className="bg-white rounded-3xl border border-[#E8DCC8] overflow-hidden shadow-sm hover:shadow-lg transition-all group flex flex-col"
+                  className={`bg-white rounded-2xl sm:rounded-3xl border border-[#E8DCC8] overflow-hidden shadow-sm hover:shadow-lg transition-all group flex flex-col ${
+                    idx === 2 ? "col-span-2 md:col-span-1" : "col-span-1"
+                  }`}
                 >
-                  <div className="relative h-72 w-full overflow-hidden bg-stone-900">
+                  <div className={`relative ${idx === 2 ? "h-56 sm:h-72" : "h-48 sm:h-72"} w-full overflow-hidden bg-stone-900`}>
                     <Image
                       src={partner.image}
                       alt={partner.name}
@@ -451,32 +453,32 @@ export default function AboutPage() {
                       className="object-cover group-hover:scale-105 transition-transform duration-700 brightness-95"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                    <div className="absolute bottom-4 left-4 right-4 text-white">
-                      <span className="label-tracking text-[9px] text-[#E8DCC8] block mb-1">
+                    <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 text-white">
+                      <span className="label-tracking text-[8px] sm:text-[9px] text-[#E8DCC8] block mb-0.5 sm:mb-1">
                         {partner.role}
                       </span>
-                      <h4 className="font-serif text-2xl text-white font-normal">
+                      <h4 className="font-serif text-base sm:text-2xl text-white font-normal leading-tight">
                         {partner.name}
                       </h4>
                     </div>
                   </div>
 
-                  <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
-                    <div className="space-y-2">
-                      <span className="text-[10px] font-mono text-[#9B2640] block font-semibold">
+                  <div className="p-3.5 sm:p-6 space-y-2 sm:space-y-3 flex-1 flex flex-col justify-between">
+                    <div className="space-y-1.5 sm:space-y-2">
+                      <span className="text-[9px] sm:text-[10px] font-mono text-[#9B2640] block font-semibold leading-tight">
                         {partner.credentials}
                       </span>
-                      <p className="text-xs text-[#6B6265] leading-relaxed">
+                      <p className="text-[11px] sm:text-xs text-[#6B6265] leading-relaxed line-clamp-3 sm:line-clamp-none">
                         {partner.bio}
                       </p>
                     </div>
 
-                    <div className="pt-4 border-t border-[#E8DCC8]/60 flex items-center justify-between text-xs">
+                    <div className="pt-2.5 sm:pt-4 border-t border-[#E8DCC8]/60 flex items-center justify-between text-xs">
                       <Link
                         href="/contact"
-                        className="text-[11px] font-bold text-[#6D1A2B] uppercase tracking-wider hover:underline"
+                        className="text-[10px] sm:text-[11px] font-bold text-[#6D1A2B] uppercase tracking-wider hover:underline"
                       >
-                        Request Private Introduction →
+                        Request Introduction →
                       </Link>
                     </div>
                   </div>
@@ -488,7 +490,7 @@ export default function AboutPage() {
           {/* =========================================================================
               SECTION 8: FIDUCIARY ACCREDITATIONS & SECURITY PROTOCOL BADGES
               ========================================================================= */}
-          <div className="about-fade-up bg-gradient-to-r from-[#161112] via-[#221217] to-[#161112] rounded-3xl p-8 sm:p-12 text-white border border-[#E8DCC8]/20 shadow-xl space-y-8">
+          <div className="about-fade-up bg-gradient-to-r from-[#161112] via-[#221217] to-[#161112] rounded-2xl sm:rounded-3xl p-4 sm:p-12 text-white border border-[#E8DCC8]/20 shadow-xl space-y-6 sm:space-y-8">
             <div className="text-center max-w-xl mx-auto space-y-2">
               <span className="label-tracking text-[10px] text-[#E8DCC8] block font-light">
                 REGULATORY COMPLIANCE
@@ -498,26 +500,26 @@ export default function AboutPage() {
               </h3>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-                <span className="text-xs font-mono text-[#E8DCC8] block">ORN: 29481</span>
-                <span className="text-sm font-serif text-white block">DLD Licensed</span>
-                <span className="text-[10px] text-[#E8DCC8]/60 block">Dubai Land Department</span>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 text-center">
+              <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 space-y-1.5 sm:space-y-2">
+                <span className="text-[11px] sm:text-xs font-mono text-[#E8DCC8] block">ORN: 29481</span>
+                <span className="text-xs sm:text-sm font-serif text-white block">DLD Licensed</span>
+                <span className="text-[9px] sm:text-[10px] text-[#E8DCC8]/60 block">Dubai Land Department</span>
               </div>
-              <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-                <span className="text-xs font-mono text-[#E8DCC8] block">DIFC Gate Village</span>
-                <span className="text-sm font-serif text-white block">Private Office</span>
-                <span className="text-[10px] text-[#E8DCC8]/60 block">Financial Freezone</span>
+              <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 space-y-1.5 sm:space-y-2">
+                <span className="text-[11px] sm:text-xs font-mono text-[#E8DCC8] block">DIFC Gate Village</span>
+                <span className="text-xs sm:text-sm font-serif text-white block">Private Office</span>
+                <span className="text-[9px] sm:text-[10px] text-[#E8DCC8]/60 block">Financial Freezone</span>
               </div>
-              <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-                <span className="text-xs font-mono text-[#E8DCC8] block">Central Bank Escrow</span>
-                <span className="text-sm font-serif text-white block">Trust Shielded</span>
-                <span className="text-[10px] text-[#E8DCC8]/60 block">UAE Banking Framework</span>
+              <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 space-y-1.5 sm:space-y-2">
+                <span className="text-[11px] sm:text-xs font-mono text-[#E8DCC8] block">Central Bank Escrow</span>
+                <span className="text-xs sm:text-sm font-serif text-white block">Trust Shielded</span>
+                <span className="text-[9px] sm:text-[10px] text-[#E8DCC8]/60 block">UAE Banking Framework</span>
               </div>
-              <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-                <span className="text-xs font-mono text-[#E8DCC8] block">NDA Binding</span>
-                <span className="text-sm font-serif text-white block">Legal Custody</span>
-                <span className="text-[10px] text-[#E8DCC8]/60 block">Swiss Standard Secrecy</span>
+              <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 space-y-1.5 sm:space-y-2">
+                <span className="text-[11px] sm:text-xs font-mono text-[#E8DCC8] block">NDA Binding</span>
+                <span className="text-xs sm:text-sm font-serif text-white block">Legal Custody</span>
+                <span className="text-[9px] sm:text-[10px] text-[#E8DCC8]/60 block">Swiss Standard Secrecy</span>
               </div>
             </div>
           </div>
