@@ -799,17 +799,42 @@ export function HeroVideo3D({
         className="w-full relative min-h-[48vh] sm:min-h-[85vh] lg:min-h-[90vh] flex flex-col justify-between overflow-visible"
       >
         {/* =========================================================================
-            1. FULL-WIDTH VIMEO VIDEO BACKGROUND (Auto-Trims Final 5 Seconds)
+            1. FULL-WIDTH HERO VIDEO BACKGROUND (Local MP4 on mobile for instant autoplay + Vimeo on desktop)
             ========================================================================= */}
         <div
           ref={videoWrapRef}
           className="absolute inset-0 w-full h-full rounded-t-[32px] sm:rounded-t-[44px] lg:rounded-t-[54px] rounded-b-none overflow-hidden pointer-events-none select-none z-0 bg-white transform-gpu"
         >
+          {/* Mobile Native Video: 100% reliable silent autoplay, zero play button, instant load */}
+          <video
+            src="/videos/video.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            controls={false}
+            disablePictureInPicture
+            className="sm:hidden absolute inset-0 w-full h-full object-cover pointer-events-none"
+            ref={(el) => {
+              if (el) {
+                el.muted = true;
+                el.defaultMuted = true;
+                el.playsInline = true;
+                const p = el.play();
+                if (p !== undefined) {
+                  p.catch(() => {});
+                }
+              }
+            }}
+          />
+
+          {/* Desktop Vimeo 1080p Stream */}
           <iframe
             ref={iframeRef}
-            src="https://player.vimeo.com/video/1246983249?h=621e2ff25d&background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&autopause=0&quality=1080p&api=1"
+            src="https://player.vimeo.com/video/1246983249?h=621e2ff25d&background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&controls=0&playsinline=1&autopause=0&transparent=0&dnt=1&quality=1080p&api=1"
             title="Velvet Key Dubai Cinematic Skyline & Architecture"
-            className="absolute top-1/2 left-1/2 w-[177.78vh] min-w-full min-h-full h-[56.25vw] -translate-x-1/2 -translate-y-1/2 object-cover scale-[1.06]"
+            className="hidden sm:block absolute top-1/2 left-1/2 w-[177.78vh] min-w-full min-h-full h-[56.25vw] -translate-x-1/2 -translate-y-1/2 object-cover scale-[1.06]"
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
             onLoad={() => {
               iframeRef.current?.contentWindow?.postMessage(

@@ -215,12 +215,17 @@ export function BronzeTimeScrollSection() {
 
     const handleResize = () => {
       if (!stickyRef.current || !renderer || !camera) return;
-      width = stickyRef.current.clientWidth;
-      height = stickyRef.current.clientHeight;
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      const newWidth = stickyRef.current.clientWidth;
+      const newHeight = stickyRef.current.clientHeight;
+      // Prevent mobile address bar jitter from constantly resizing WebGL canvas
+      if (Math.abs(newWidth - width) > 5 || Math.abs(newHeight - height) > 90) {
+        width = newWidth;
+        height = newHeight;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      }
       handleScroll();
     };
 
@@ -231,6 +236,9 @@ export function BronzeTimeScrollSection() {
     // Initial sync
     handleScroll();
 
+    // Cache grid dot DOM nodes once to avoid querying the DOM every frame
+    const dots = Array.from(document.querySelectorAll<HTMLElement>(".vk-grid-dot"));
+
     // --- ANIMATION LOOP ---
     let animId: number;
     const animate = () => {
@@ -240,8 +248,10 @@ export function BronzeTimeScrollSection() {
       lastTime = now;
       const time = (now - startTime) / 1000;
 
-      // Smooth physical scroll lerp
-      currentScroll += (targetScroll - currentScroll) * 0.045;
+      // Smooth physical scroll lerp (responsive factor on mobile to prevent rubber-band vibration)
+      const isMobile = window.innerWidth < 640;
+      const lerpSpeed = isMobile ? 0.08 : 0.055;
+      currentScroll += (targetScroll - currentScroll) * lerpSpeed;
 
       // Mouse rotation lerp
       mouseX += (targetMouseX - mouseX) * 0.06;
@@ -315,16 +325,10 @@ export function BronzeTimeScrollSection() {
         setActiveSlide(targetSlide);
       }
 
-      // Update grid dots
-      const dots = document.querySelectorAll(".vk-grid-dot");
-      dots.forEach((dotNode, i) => {
-        const dot = dotNode as HTMLElement;
-        const startY = ((i * 17) % 80) + 10;
-        let speed = 90 + ((i * 55) % 180);
-        if (i % 2 === 0) speed = -speed;
-        let yPos = startY + currentScroll * speed;
-        yPos = ((yPos % 100) + 100) % 100;
-        dot.style.top = `${yPos}%`;
+      // Update grid dots with GPU translate3d (eliminates layout reflow and vibration)
+      dots.forEach((dot, i) => {
+        const floatY = Math.sin(time * 1.2 + i * 1.5) * 8;
+        dot.style.transform = `translate3d(-50%, ${floatY}px, 0)`;
       });
 
       renderer?.render(scene, camera);
@@ -362,9 +366,9 @@ export function BronzeTimeScrollSection() {
             return (
               <span
                 key={`c-${cIdx}`}
-                className={`inline-block transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${isSlideActive
-                  ? "opacity-100 translate-y-0 blur-0"
-                  : "opacity-0 translate-y-[45px] blur-[12px]"
+                className={`inline-block transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${isSlideActive
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-[24px]"
                   }`}
                 style={{ transitionDelay: `${currentDelay}s` }}
               >
@@ -386,7 +390,7 @@ export function BronzeTimeScrollSection() {
       {/* STICKY FULLSCREEN VIEWPORT */}
       <div
         ref={stickyRef}
-        className="sticky top-0 h-screen w-full overflow-hidden select-none bg-[#FBF8F3]"
+        className="sticky top-0 h-[100dvh] w-full overflow-hidden select-none bg-[#FBF8F3]"
       >
         {/* =========================================================================
             4 DYNAMIC BACKGROUND IMAGES (CROSSFADE WHEN MILESTONE ANIMATION CHANGES)

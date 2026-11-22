@@ -35,18 +35,58 @@ export function IdentitySection() {
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  // Ensure local video autoplays smoothly on mount across all browsers
+  // Ensure local video autoplays smoothly on mount across all browsers (including iOS/Android mobile)
   useEffect(() => {
-    videoRefs.current.forEach((video, idx) => {
-      if (!video) return;
-      video.muted = true;
-      video.defaultMuted = true;
-      video.currentTime = CHEVRONS[idx]?.timeOffset || 0;
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => { });
-      }
-    });
+    const startVideos = () => {
+      videoRefs.current.forEach((video, idx) => {
+        if (!video) return;
+        video.muted = true;
+        video.defaultMuted = true;
+        video.playsInline = true;
+
+        const attemptPlay = () => {
+          try {
+            const offset = CHEVRONS[idx]?.timeOffset || 0;
+            if (offset > 0 && video.duration && offset < video.duration) {
+              video.currentTime = offset;
+            }
+          } catch {
+            // Ignore if metadata not fully parsed yet
+          }
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {});
+          }
+        };
+
+        if (video.readyState >= 1) {
+          attemptPlay();
+        } else {
+          video.addEventListener("loadedmetadata", attemptPlay, { once: true });
+          video.addEventListener("canplay", attemptPlay, { once: true });
+        }
+      });
+    };
+
+    startVideos();
+
+    // Mobile autoplay policy fallback: unlock on first touch or scroll
+    const onUserInteract = () => {
+      startVideos();
+      window.removeEventListener("touchstart", onUserInteract);
+      window.removeEventListener("scroll", onUserInteract);
+      window.removeEventListener("click", onUserInteract);
+    };
+
+    window.addEventListener("touchstart", onUserInteract, { passive: true, once: true });
+    window.addEventListener("scroll", onUserInteract, { passive: true, once: true });
+    window.addEventListener("click", onUserInteract, { once: true });
+
+    return () => {
+      window.removeEventListener("touchstart", onUserInteract);
+      window.removeEventListener("scroll", onUserInteract);
+      window.removeEventListener("click", onUserInteract);
+    };
   }, []);
 
   useEffect(() => {
@@ -172,13 +212,21 @@ export function IdentitySection() {
             >
               <video
                 ref={(el) => {
-                  videoRefs.current[idx] = el;
+                  if (el) {
+                    videoRefs.current[idx] = el;
+                    el.muted = true;
+                    el.defaultMuted = true;
+                    el.playsInline = true;
+                  }
                 }}
                 src={LOCAL_VIDEO_SRC}
                 loop
                 muted
                 playsInline
                 autoPlay
+                preload="auto"
+                controls={false}
+                disablePictureInPicture
                 className="w-full h-full object-cover pointer-events-none scale-105"
                 style={{
                   filter: "brightness(0.92) contrast(1.08)",

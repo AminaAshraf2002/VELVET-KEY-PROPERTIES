@@ -24,20 +24,28 @@ export function ThreeKeyPreloader({ onComplete }: PreloaderProps) {
   const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
+    // If already preloaded in this session, skip immediately with 0 delay
+    if (typeof window !== "undefined" && sessionStorage.getItem("velvet_key_preloaded") === "true") {
+      setIsDone(true);
+      onComplete?.();
+      window.dispatchEvent(new CustomEvent("velvet:preloader-done"));
+      return;
+    }
 
-    // Master Timeline for counting up and opening (Luxurious, deliberate pacing)
+    // Master Timeline for counting up and opening (Crisp, fast ~0.35s to prevent delays)
     const progressObj = { value: 0 };
     const tl = gsap.timeline({
       onComplete: () => {
+        sessionStorage.setItem("velvet_key_preloaded", "true");
         setIsDone(true);
         onComplete?.();
       },
     });
 
-    // 1. Measured percentage counter progression (Ultra-smooth & faster ~0.85s)
+    // 1. Measured percentage counter progression (Fast & responsive ~0.35s)
     tl.to(progressObj, {
       value: 100,
-      duration: 0.85,
+      duration: 0.35,
       ease: "power2.inOut",
       onUpdate: () => {
         const current = Math.floor(progressObj.value);
@@ -52,13 +60,13 @@ export function ThreeKeyPreloader({ onComplete }: PreloaderProps) {
     });
 
     // 2. Snappy pause at 100% to confirm access
-    tl.to({}, { duration: 0.05 });
+    tl.to({}, { duration: 0.04 });
 
     // 3. Central Core Key Unlock Pulse
     tl.to(coreRef.current, {
-      scale: 1.05,
+      scale: 1.04,
       opacity: 0,
-      duration: 0.16,
+      duration: 0.12,
       ease: "power3.inOut",
     });
 
@@ -67,8 +75,8 @@ export function ThreeKeyPreloader({ onComplete }: PreloaderProps) {
       columnsRef.current,
       {
         yPercent: -100,
-        duration: 0.38,
-        stagger: 0.025,
+        duration: 0.28,
+        stagger: 0.015,
         ease: "power4.inOut",
         onStart: () => {
           if (typeof window !== "undefined") {
@@ -76,7 +84,7 @@ export function ThreeKeyPreloader({ onComplete }: PreloaderProps) {
           }
         },
       },
-      "-=0.06"
+      "-=0.04"
     );
 
     return () => {
