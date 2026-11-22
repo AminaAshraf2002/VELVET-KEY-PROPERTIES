@@ -234,14 +234,14 @@ export default function AboutPage() {
           {/* =========================================================================
               SECTION 4: ARCHITECTURAL HERITAGE & PROVENANCE SHOWCASE
               ========================================================================= */}
-          <div className="about-fade-up bg-white rounded-3xl border border-[#E8DCC8] p-8 sm:p-12 shadow-sm space-y-8">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-              <div className="space-y-2">
+          <div className="about-fade-up bg-white rounded-2xl sm:rounded-3xl border border-[#E8DCC8] p-3.5 sm:p-12 shadow-sm space-y-5 sm:space-y-8 w-full">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 px-1 sm:px-0">
+              <div className="space-y-1.5 sm:space-y-2">
                 <span className="label-tracking text-[10px] text-[#9B2640] block font-semibold">
                   DUBAI MONUMENTS & TROPHY ASSETS
                 </span>
                 <div className="border-l-[3.5px] border-[#6D1A2B] pl-3.5 sm:pl-4">
-                  <h3 className="font-serif text-2xl sm:text-3xl text-[#161112] font-normal uppercase tracking-[0.05em]" style={{ fontFamily: "var(--font-optima), 'Optima', sans-serif", fontWeight: 400 }}>
+                  <h3 className="font-serif text-xl sm:text-3xl text-[#161112] font-normal uppercase tracking-[0.05em]" style={{ fontFamily: "var(--font-optima), 'Optima', sans-serif", fontWeight: 400 }}>
                     Curated Enclaves of Distinction
                   </h3>
                 </div>
@@ -251,8 +251,8 @@ export default function AboutPage() {
               </p>
             </div>
 
-            {/* Mobile: 2 images in 1st row, 1 full-width image in 2nd row | Desktop: 3 images in 1 row */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
+            {/* Mobile: 2 wide images in 1st row, 1 full-width wide image in 2nd row | Desktop: 3 images in 1 row */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-6 w-full">
               {[
                 {
                   title: "Palm Jumeirah Signature Fronds",
@@ -275,10 +275,10 @@ export default function AboutPage() {
               ].map((card, i) => (
                 <div
                   key={i}
-                  className={`group relative rounded-2xl overflow-hidden border border-[#E8DCC8] shadow-sm flex flex-col justify-end p-4 sm:p-6 ${
+                  className={`group relative rounded-xl sm:rounded-2xl overflow-hidden border border-[#E8DCC8] shadow-sm flex flex-col justify-end p-3.5 sm:p-6 w-full ${
                     i === 2
-                      ? "col-span-2 md:col-span-1 h-52 sm:h-80"
-                      : "col-span-1 h-60 sm:h-80"
+                      ? "col-span-2 md:col-span-1 h-56 sm:h-80"
+                      : "col-span-1 h-64 sm:h-80"
                   }`}
                 >
                   <Image
@@ -292,7 +292,7 @@ export default function AboutPage() {
                     <span className="label-tracking text-[8px] sm:text-[9px] text-[#E8DCC8] block font-semibold">
                       {card.tag}
                     </span>
-                    <h4 className="font-serif text-sm sm:text-xl text-white font-normal leading-snug">
+                    <h4 className="font-serif text-xs sm:text-xl text-white font-normal leading-snug">
                       {card.title}
                     </h4>
                     <span className="text-[10px] sm:text-[11px] font-mono text-[#E8DCC8] block pt-0.5 sm:pt-1">

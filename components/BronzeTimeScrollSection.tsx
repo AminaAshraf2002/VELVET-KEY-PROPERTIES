@@ -204,13 +204,23 @@ export function BronzeTimeScrollSection() {
       targetMouseY = ((e.clientY - rect.top) / rect.height) * 2 - 1;
     };
 
-    const handleScroll = () => {
+    // --- FAST CACHED SCROLL METRICS (Eliminates layout thrashing during scroll) ---
+    let containerTop = 0;
+    let totalScrollable = 1;
+
+    const measureContainer = () => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      const totalScrollable = containerRef.current.scrollHeight - window.innerHeight;
+      const scrollY = window.scrollY || window.pageYOffset;
+      containerTop = scrollY + rect.top;
+      totalScrollable = containerRef.current.scrollHeight - window.innerHeight;
+    };
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
       if (totalScrollable <= 0) return;
-      const progress = Math.min(Math.max(-rect.top / totalScrollable, 0), 1);
-      targetScroll = progress;
+      const offset = scrollY - containerTop;
+      targetScroll = Math.min(Math.max(offset / totalScrollable, 0), 1);
     };
 
     const handleResize = () => {
@@ -226,14 +236,28 @@ export function BronzeTimeScrollSection() {
         renderer.setSize(width, height);
         renderer.setPixelRatio(window.innerWidth < 768 ? 1 : Math.min(window.devicePixelRatio, 2));
       }
+      measureContainer();
       handleScroll();
     };
+
+    // Viewport intersection observer to pause heavy loops when off-screen
+    let isSectionInView = true;
+    const viewObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isSectionInView = entry.isIntersecting;
+        });
+      },
+      { rootMargin: "150px 0px" }
+    );
+    viewObserver.observe(container);
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleResize);
 
     // Initial sync
+    measureContainer();
     handleScroll();
 
     // Pre-cache stories progress dash fill DOM elements to eliminate layout thrashing
@@ -243,6 +267,8 @@ export function BronzeTimeScrollSection() {
     let animId: number;
     const animate = () => {
       animId = requestAnimationFrame(animate);
+      if (!isSectionInView) return;
+
       const now = performance.now();
       const deltaTime = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
@@ -300,7 +326,7 @@ export function BronzeTimeScrollSection() {
       camera.position.set(camX, camY, camZ);
       camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-      // Update stories progress dashes using pre-cached DOM nodes
+      // Update stories progress dashes using GPU scaleY transform (ZERO layout reflows)
       for (let i = 0; i < 4; i++) {
         const fill = dashFills[i];
         if (fill) {
@@ -308,7 +334,7 @@ export function BronzeTimeScrollSection() {
           const end = (i + 1) * 0.25;
           let progress = (currentScroll - start) / (end - start);
           progress = Math.max(0, Math.min(1, progress));
-          fill.style.height = `${progress * 100}%`;
+          fill.style.transform = `scaleY(${progress})`;
         }
       }
 
@@ -342,6 +368,7 @@ export function BronzeTimeScrollSection() {
 
     return () => {
       cancelAnimationFrame(animId);
+      viewObserver.disconnect();
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
@@ -405,9 +432,9 @@ export function BronzeTimeScrollSection() {
             return (
               <div
                 key={`bg-img-${slide.step}`}
-                className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isSlideActive
-                  ? "opacity-100 scale-100 filter blur-0"
-                  : "opacity-0 scale-105 filter blur-[2px]"
+                className={`absolute inset-0 w-full h-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isSlideActive
+                  ? "opacity-100 scale-100"
+                  : "opacity-0 scale-105"
                   }`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -461,7 +488,8 @@ export function BronzeTimeScrollSection() {
                 >
                   <div
                     id={`vk-dash-fill-${step}`}
-                    className="w-full h-0 bg-gradient-to-b from-[#6D1A2B] to-[#9B2640] rounded-full transition-all duration-75"
+                    className="w-full h-full origin-top bg-gradient-to-b from-[#6D1A2B] to-[#9B2640] rounded-full transition-transform duration-75"
+                    style={{ transform: "scaleY(0)" }}
                   />
                 </button>
               ))}
