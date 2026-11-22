@@ -116,7 +116,7 @@ export function Navbar({ forceSolid = false }: NavbarProps) {
         className={`sticky top-0 z-50 w-full bg-white transition-shadow duration-300 select-none ${isScrolled || forceSolid ? "shadow-md" : ""}`}
         style={{ fontFamily: "var(--font-avenir), 'Avenir', 'Avenir Next', sans-serif" }}
       >
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-1 sm:py-1.5 lg:py-2 flex items-center justify-between border-b border-[#E8DCC8]/40">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-1 sm:py-1.5 lg:py-2 flex items-center justify-between">
           {/* Left Column: Spacer so Center Logo remains centered */}
           <div className="flex-1 justify-start hidden lg:flex" />
 
@@ -192,7 +192,7 @@ export function Navbar({ forceSolid = false }: NavbarProps) {
           ========================================================================= */}
       <nav
         aria-label="Secondary Navigation"
-        className="hidden lg:block bg-white pt-1 pb-2 min-[1600px]:pt-1.5 min-[1600px]:pb-2 relative z-30 border-b border-[#E8DCC8]/40 select-none"
+        className="hidden lg:block bg-white pt-1 pb-2 min-[1600px]:pt-1.5 min-[1600px]:pb-2 relative z-30 select-none"
         style={{ fontFamily: "var(--font-avenir), 'Avenir', 'Avenir Next', sans-serif" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
