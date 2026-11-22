@@ -204,23 +204,22 @@ export function BronzeTimeScrollSection() {
       targetMouseY = ((e.clientY - rect.top) / rect.height) * 2 - 1;
     };
 
-    // --- FAST CACHED SCROLL METRICS (Eliminates layout thrashing during scroll) ---
-    let containerTop = 0;
-    let totalScrollable = 1;
-
-    const measureContainer = () => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const scrollY = window.scrollY || window.pageYOffset;
-      containerTop = scrollY + rect.top;
-      totalScrollable = containerRef.current.scrollHeight - window.innerHeight;
-    };
-
+    // --- RENDER-SYNCHRONIZED SCROLL SAMPLING (Zero layout thrashing) ---
+    let isTicking = false;
     const handleScroll = () => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      if (totalScrollable <= 0) return;
-      const offset = scrollY - containerTop;
-      targetScroll = Math.min(Math.max(offset / totalScrollable, 0), 1);
+      if (!isTicking) {
+        requestAnimationFrame(() => {
+          if (containerRef.current) {
+            const rect = containerRef.current.getBoundingClientRect();
+            const total = containerRef.current.scrollHeight - window.innerHeight;
+            if (total > 0) {
+              targetScroll = Math.min(Math.max(-rect.top / total, 0), 1);
+            }
+          }
+          isTicking = false;
+        });
+        isTicking = true;
+      }
     };
 
     const handleResize = () => {
@@ -236,7 +235,6 @@ export function BronzeTimeScrollSection() {
         renderer.setSize(width, height);
         renderer.setPixelRatio(window.innerWidth < 768 ? 1 : Math.min(window.devicePixelRatio, 2));
       }
-      measureContainer();
       handleScroll();
     };
 
@@ -257,7 +255,6 @@ export function BronzeTimeScrollSection() {
     window.addEventListener("resize", handleResize);
 
     // Initial sync
-    measureContainer();
     handleScroll();
 
     // Pre-cache stories progress dash fill DOM elements to eliminate layout thrashing
@@ -274,9 +271,9 @@ export function BronzeTimeScrollSection() {
       lastTime = now;
       const time = (now - startTime) / 1000;
 
-      // Physical scroll lerp: smooth interpolation on both mobile and desktop (prevents discrete touch jerking)
+      // Physical scroll lerp: responsive & fast on mobile to prevent lagging touch stutter, smooth on desktop
       const isMobile = window.innerWidth < 768;
-      const lerpSpeed = isMobile ? 0.085 : 0.08;
+      const lerpSpeed = isMobile ? 0.15 : 0.08;
       currentScroll += (targetScroll - currentScroll) * lerpSpeed;
 
       // Mouse rotation lerp
@@ -553,7 +550,17 @@ export function BronzeTimeScrollSection() {
                       className="slide-title font-serif font-normal text-[1.65rem] sm:text-3xl lg:text-[38px] xl:text-[44px] leading-[1.1] text-[#161112] uppercase tracking-[0.05em]"
                       style={{ fontFamily: "var(--font-optima), 'Optima', Candara, sans-serif", fontWeight: 400 }}
                     >
-                      {renderSplitTitle(slide.title, isSlideActive)}
+                      {/* Mobile: clean instant fade without 50 delayed span reflows */}
+                      <span
+                        className={`sm:hidden block transition-opacity duration-300 ${
+                          isSlideActive ? "opacity-100" : "opacity-0"
+                        }`}
+                        dangerouslySetInnerHTML={{ __html: slide.title }}
+                      />
+                      {/* Desktop: rich per-letter stagger reveal */}
+                      <span className="hidden sm:inline-block">
+                        {renderSplitTitle(slide.title, isSlideActive)}
+                      </span>
                     </h2>
                   </div>
 

@@ -307,17 +307,17 @@ export default function AboutPage() {
           {/* =========================================================================
               SECTION 5: THE FOUR PILLARS OF ARCHITECTURAL MERIT
               ========================================================================= */}
-          <div className="about-fade-up space-y-8">
-            <div className="text-center max-w-2xl mx-auto space-y-3">
+          <div className="about-fade-up space-y-6 sm:space-y-8">
+            <div className="text-left max-w-2xl space-y-2 sm:space-y-3">
               <span className="label-tracking text-[10px] text-[#9B2640] block font-semibold">
                 FOUNDATIONAL CRITERIA
               </span>
-              <div className="inline-block border-l-[3.5px] border-[#6D1A2B] pl-3.5 sm:pl-4 text-left">
+              <div className="border-l-[3.5px] border-[#6D1A2B] pl-3.5 sm:pl-4">
                 <h2 className="font-serif text-2xl sm:text-3xl text-[#161112] font-normal uppercase tracking-[0.05em]" style={{ fontFamily: "var(--font-optima), 'Optima', sans-serif", fontWeight: 400 }}>
                   Four Pillars of Architectural Merit
                 </h2>
               </div>
-              <p className="text-xs sm:text-sm text-[#6B6265]">
+              <p className="text-xs sm:text-sm text-[#6B6265] font-light leading-relaxed">
                 We accept fewer than 8% of properties presented for representation. Every residence must satisfy our quadruple standard.
               </p>
             </div>
@@ -370,9 +370,10 @@ export default function AboutPage() {
 
           {/* =========================================================================
               SECTION 6: THE 4-STAGE PRIVATE CLIENT LIFECYCLE (TIMELINE)
+              (Mobile: 2 rows with 2 cards in first row, 2 cards in second row)
               ========================================================================= */}
-          <div className="about-fade-up bg-white rounded-3xl border border-[#E8DCC8] p-8 sm:p-14 shadow-sm space-y-10">
-            <div className="max-w-2xl space-y-3">
+          <div className="about-fade-up bg-white rounded-2xl sm:rounded-3xl border border-[#E8DCC8] p-4 sm:p-14 shadow-sm space-y-6 sm:space-y-10">
+            <div className="max-w-2xl space-y-2 sm:space-y-3">
               <span className="label-tracking text-[10px] text-[#9B2640] block font-semibold">
                 EXECUTION PROCESS
               </span>
@@ -381,29 +382,30 @@ export default function AboutPage() {
                   The Private Client Acquisition Protocol
                 </h2>
               </div>
-              <p className="text-xs sm:text-sm text-[#6B6265]">
+              <p className="text-xs sm:text-sm text-[#6B6265] font-light leading-relaxed">
                 How Velvet Key orchestrates ultra-prime residential transactions with institutional rigor.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+            {/* Mobile: 2 rows (2 cards in 1st row, 2 cards in 2nd row) | Desktop: 4 cards in 1 row */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 relative">
               {LIFECYCLE_STEPS.map((step, idx) => (
                 <div
                   key={idx}
-                  className="p-6 rounded-2xl bg-[#FBF8F3] border border-[#E8DCC8] space-y-3 relative flex flex-col justify-between"
+                  className="p-4 sm:p-6 rounded-xl sm:rounded-2xl bg-[#FBF8F3] border border-[#E8DCC8] space-y-2.5 sm:space-y-3 relative flex flex-col justify-between"
                 >
-                  <div className="space-y-3">
-                    <span className="font-serif text-4xl text-[#E8DCC8] font-bold block">
+                  <div className="space-y-2 sm:space-y-3">
+                    <span className="font-serif text-2xl sm:text-4xl text-[#E8DCC8] font-bold block">
                       {step.step}
                     </span>
-                    <h4 className="font-serif text-lg text-[#161112] font-semibold">
+                    <h4 className="font-serif text-sm sm:text-lg text-[#161112] font-semibold leading-snug">
                       {step.title}
                     </h4>
-                    <p className="text-xs text-[#6B6265] leading-relaxed">
+                    <p className="text-[10px] sm:text-xs text-[#6B6265] leading-relaxed line-clamp-4 sm:line-clamp-none">
                       {step.description}
                     </p>
                   </div>
-                  <span className="text-[10px] font-mono text-[#6D1A2B] pt-4 block border-t border-[#E8DCC8]/60">
+                  <span className="text-[9px] sm:text-[10px] font-mono text-[#6D1A2B] pt-2.5 sm:pt-4 block border-t border-[#E8DCC8]/60">
                     Phase {step.step} Complete
                   </span>
                 </div>
