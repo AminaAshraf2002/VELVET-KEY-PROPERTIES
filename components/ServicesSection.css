@@ -1,0 +1,178 @@
+/* =========================================================================
+   SERVICES SECTION STYLES
+   Dark theme, full-width rows with interactive scroll & hover image reveal
+   ========================================================================= */
+
+.services-section {
+  background-color: #0d0d0f;
+  color: #ffffff;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Individual Row */
+.service-row {
+  position: relative;
+  width: 100%;
+  min-height: 200px;
+  height: 30vh;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  background-color: #0d0d0f;
+  transition: background-color 0.4s ease;
+}
+
+@media (max-width: 768px) {
+  .service-row {
+    height: auto;
+    min-height: 240px;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+}
+
+/* Thin divider line */
+.service-divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.15);
+  transform-origin: left center;
+  z-index: 15;
+}
+
+.service-divider-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.15);
+  transform-origin: left center;
+  z-index: 15;
+}
+
+/* Row Image & Overlay Container: DEFAULT IS BLACK (opacity: 0) */
+.service-bg-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0; /* Otherwise pitch black */
+  will-change: opacity, transform;
+}
+
+.service-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 120%;
+  top: -10%;
+  object-fit: cover;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.service-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.50);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Content Container */
+.service-content-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 80rem; /* max-w-7xl */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (min-width: 640px) {
+  .service-content-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-content-container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+/* Title & Animated Underline Wrapper */
+.service-title-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.service-title-underline {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff;
+  transform-origin: left center;
+  transform: scaleX(0);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Character Mask Wrapper */
+.service-char-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+}
+
+.service-char {
+  display: inline-block;
+  color: #ffffff;
+  opacity: 1;
+  will-change: transform, opacity;
+}
+
+/* Description Words */
+.service-desc-word {
+  display: inline-block;
+  color: #888888;
+  opacity: 0.6;
+  margin-right: 0.28em;
+  will-change: color, opacity;
+  transition: color 0.4s ease, opacity 0.4s ease;
+}
+
+.service-desc-word.active-word {
+  color: #ffffff;
+  opacity: 1;
+}
+
+/* Row Arrow */
+.service-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+}

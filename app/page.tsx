@@ -1,69 +1,149 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useState } from "react";
+import Link from "next/link";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { ThreeKeyPreloader } from "@/components/ThreeKeyPreloader";
+import { HeroVideo3D } from "@/components/HeroVideo3D";
+import { IdentitySection } from "@/components/IdentitySection";
+import { ServicesSection } from "@/components/ServicesSection";
+import { SupportSection } from "@/components/SupportSection";
+import { BronzeTimeScrollSection } from "@/components/BronzeTimeScrollSection";
+import { FeaturedResidencesMarquee } from "@/components/FeaturedResidencesMarquee";
+import { AccreditedDevelopersMarquee } from "@/components/AccreditedDevelopersMarquee";
+import { InfiniteMarqueeWall } from "@/components/InfiniteMarqueeWall";
+import { PrimeDubaiEnclavesPinned } from "@/components/PrimeDubaiEnclavesPinned";
+import { PalmReserveScrollStory } from "@/components/PalmReserveScrollStory";
+import { WhyVelvetKeySkyline } from "@/components/WhyVelvetKeySkyline";
+import { CustomCursor } from "@/components/CustomCursor";
+import { ViewingModal } from "@/components/ViewingModal";
+import { PROPERTIES, COMMUNITIES } from "@/lib/properties";
+
+export default function HomePage() {
+  const [searchTab, setSearchTab] = useState<"buy" | "rent" | "off-plan">("buy");
+  const [selectedArea, setSelectedArea] = useState("All Districts");
+  const [isViewingModalOpen, setIsViewingModalOpen] = useState(false);
+  const [modalPropertyTitle, setModalPropertyTitle] = useState("Private Viewing Consultation");
+
+  const handleOpenViewing = (title: string) => {
+    setModalPropertyTitle(title);
+    setIsViewingModalOpen(true);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      {/* 1. THREE.JS 3D KEY PRELOADER */}
+      <ThreeKeyPreloader />
+
+      {/* 2. GSAP CUSTOM INERTIA CURSOR */}
+      <CustomCursor />
+
+      {/* 3. NAVIGATION BAR */}
+      <Navbar />
+
+      <main className="bg-[#FBF8F3] text-[#161112] relative overflow-x-clip">
+        {/* =========================================================================
+            01. FULL-WIDTH CINEMATIC HERO (Video Background + Floating Search Dock)
+            ========================================================================= */}
+        <HeroVideo3D
+          onOpenViewing={handleOpenViewing}
+          searchTab={searchTab}
+          setSearchTab={setSearchTab}
+          selectedArea={selectedArea}
+          setSelectedArea={setSelectedArea}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+
+        {/* =========================================================================
+            02. MARQUEE STRIP (Seamless Ribbon Directly Below Hero with Diamond Accents)
+            ========================================================================= */}
+        <div className="py-5 bg-white border-b border-[#E8DCC8] overflow-hidden whitespace-nowrap flex items-center select-none shadow-sm relative z-10">
+          <div className="flex items-center gap-10 animate-marquee">
+            {[
+              "PALM JUMEIRAH",
+              "DOWNTOWN DUBAI",
+              "EMIRATES HILLS",
+              "JUMEIRAH BAY ISLAND",
+              "DUBAI HILLS ESTATE",
+              "DIFC GATE DISTRICT",
+              "BLUEWATERS ISLAND",
+              "PALM JUMEIRAH",
+              "DOWNTOWN DUBAI",
+              "EMIRATES HILLS",
+              "JUMEIRAH BAY ISLAND",
+            ].map((area, idx) => (
+              <React.Fragment key={idx}>
+                <span className="font-serif text-sm tracking-[0.25em] text-[#161112] uppercase font-medium hover:text-[#6D1A2B] transition-colors cursor-pointer">
+                  {area}
+                </span>
+                <span className="text-[#9B2640] text-xs select-none">◆</span>
+              </React.Fragment>
+            ))}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+
+        {/* =========================================================================
+            03. IDENTITY SECTION (Brand Essence & Philosophy: "Not just about real estate")
+            ========================================================================= */}
+        <IdentitySection />
+
+        {/* =========================================================================
+            04. BRONZE & TIME SKYLINE SCROLL SECTION (Pinned 3D WebGL Orbit Experience)
+            ========================================================================= */}
+        <BronzeTimeScrollSection />
+
+        {/* =========================================================================
+            05. FEATURED PROPERTIES (Interactive Drag Marquee with Curved White Masks)
+            ========================================================================= */}
+        <FeaturedResidencesMarquee onOpenViewing={handleOpenViewing} />
+
+        {/* =========================================================================
+            06. PRIME DUBAI ENCLAVES (GSAP Pinned Stacked Full-Width Cards)
+            ========================================================================= */}
+        <PrimeDubaiEnclavesPinned />
+
+        {/* =========================================================================
+            07. SERVICES SECTION (Buy, Sell, Rent - Full Width Interactive Dark Rows)
+            ========================================================================= */}
+        <ServicesSection />
+
+        {/* =========================================================================
+            08. OFF-PLAN SPOTLIGHT & PAYMENT TIMELINE (Pinned GSAP Scroll Story)
+            ========================================================================= */}
+        <PalmReserveScrollStory onOpenViewing={handleOpenViewing} />
+
+        {/* =========================================================================
+            09. SUPPORT SECTION (Support Beyond Buying and Selling - 3 Image Cards)
+            ========================================================================= */}
+        <SupportSection />
+
+        {/* =========================================================================
+            10. WHY VELVET KEY (The Velvet Standard - GSAP ScrollTrigger Skyline Experience)
+            ========================================================================= */}
+        <WhyVelvetKeySkyline />
+
+        {/* =========================================================================
+            11. ACCREDITED DEVELOPER ALLOCATIONS (Bespoke 3D Curved Cylindrical Ribbon)
+            ========================================================================= */}
+        <AccreditedDevelopersMarquee onOpenViewing={handleOpenViewing} />
+
+        {/* =========================================================================
+            12. MARKET INSIGHTS (Dubai Prime Market Reports - Infinite Marquee Wall)
+            ========================================================================= */}
+        <section className="relative w-full overflow-hidden border-t border-white/10 bg-[#0d0b0c]">
+          <InfiniteMarqueeWall />
+        </section>
       </main>
-    </div>
+
+      {/* 13. COMPREHENSIVE FOOTER */}
+      <Footer />
+
+      {/* Viewing Modal */}
+      <ViewingModal
+        isOpen={isViewingModalOpen}
+        onClose={() => setIsViewingModalOpen(false)}
+        propertyTitle={modalPropertyTitle}
+      />
+    </>
   );
 }

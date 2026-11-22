@@ -1,0 +1,127 @@
+/**
+ * VELVET KEY PROPERTIES — DESIGN TOKENS
+ * Brand: Velvet Key Properties (Quiet Luxury Real Estate, Dubai)
+ * Version: 1.0.0
+ */
+
+:root {
+  /* ==========================================================================
+     1. COLOR PALETTE
+     ========================================================================== */
+  /* Surfaces & Backgrounds */
+  --vk-color-bg-white: #FFFFFF;
+  --vk-color-bg-ivory: #FBF8F3;
+  --vk-color-bg-beige: #E8DCC8;
+  --vk-color-bg-card: #FFFFFF;
+  --vk-color-bg-glass: rgba(255, 255, 255, 0.72);
+  --vk-color-bg-glass-dark: rgba(22, 17, 18, 0.65);
+  --vk-color-bg-glass-border: rgba(232, 220, 200, 0.45);
+
+  /* Primary Brand - Burgundy */
+  --vk-color-burgundy: #6D1A2B;
+  --vk-color-burgundy-deep: #4A0F1C;
+  --vk-color-rose-accent: #9B2640;
+  --vk-color-burgundy-subtle: rgba(109, 26, 43, 0.06);
+  --vk-color-burgundy-glow: rgba(109, 26, 43, 0.18);
+
+  /* Text & Ink */
+  --vk-color-ink: #161112;
+  --vk-color-ink-secondary: #3D3537;
+  --vk-color-muted: #6B6265;
+  --vk-color-muted-light: #9B9194;
+  --vk-color-text-inverse: #FFFFFF;
+  --vk-color-text-inverse-muted: #E8DCC8;
+
+  /* Borders & Dividers */
+  --vk-color-border-subtle: rgba(22, 17, 18, 0.08);
+  --vk-color-border-medium: rgba(22, 17, 18, 0.14);
+  --vk-color-border-beige: #E8DCC8;
+  --vk-color-border-burgundy: rgba(109, 26, 43, 0.25);
+
+  /* ==========================================================================
+     2. TYPOGRAPHY
+     ========================================================================== */
+  --vk-font-serif: var(--font-playfair, 'Playfair Display', Georgia, serif);
+  --vk-font-sans: var(--font-inter, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+
+  /* Font Scales (Font Size / Line Height) */
+  --vk-type-h1-size: 5.75rem;     /* 92px */
+  --vk-type-h1-line: 6.25rem;     /* 100px */
+  --vk-type-h1-mobile-size: 2.75rem; /* 44px */
+  --vk-type-h1-mobile-line: 3.25rem; /* 52px */
+
+  --vk-type-h2-size: 3.5rem;      /* 56px */
+  --vk-type-h2-line: 4rem;        /* 64px */
+  --vk-type-h2-mobile-size: 2rem; /* 32px */
+  --vk-type-h2-mobile-line: 2.5rem; /* 40px */
+
+  --vk-type-h3-size: 1.75rem;     /* 28px */
+  --vk-type-h3-line: 2.25rem;     /* 36px */
+  --vk-type-h3-mobile-size: 1.375rem; /* 22px */
+  --vk-type-h3-mobile-line: 1.75rem;  /* 28px */
+
+  --vk-type-h4-size: 1.25rem;     /* 20px */
+  --vk-type-h4-line: 1.75rem;     /* 28px */
+
+  --vk-type-body-size: 1rem;      /* 16px */
+  --vk-type-body-line: 1.75rem;   /* 28px */
+
+  --vk-type-body-sm-size: 0.875rem; /* 14px */
+  --vk-type-body-sm-line: 1.375rem; /* 22px */
+
+  /* Label Style */
+  --vk-type-label-size: 0.75rem;  /* 12px */
+  --vk-type-label-line: 1rem;     /* 16px */
+  --vk-type-label-tracking: 0.3em;
+  --vk-type-label-transform: uppercase;
+
+  /* ==========================================================================
+     3. GRID & SPACING SCALE (Base 8px)
+     ========================================================================== */
+  --vk-container-max: 1280px;
+  --vk-grid-columns: 12;
+  --vk-grid-gutter: 24px;
+  --vk-grid-margin-desktop: 48px;
+  --vk-grid-margin-mobile: 20px;
+
+  --vk-space-1: 8px;
+  --vk-space-2: 16px;
+  --vk-space-3: 24px;
+  --vk-space-4: 32px;
+  --vk-space-5: 40px;
+  --vk-space-6: 48px;
+  --vk-space-8: 64px;
+  --vk-space-10: 80px;
+  --vk-space-12: 96px;
+  --vk-space-16: 128px;
+  --vk-space-20: 160px;
+
+  /* ==========================================================================
+     4. RADIUS
+     ========================================================================== */
+  --vk-radius-sm: 8px;
+  --vk-radius-card: 16px;         /* Standard card radius */
+  --vk-radius-card-lg: 24px;
+  --vk-radius-button: 9999px;      /* Pill button radius */
+  --vk-radius-input: 12px;
+
+  /* ==========================================================================
+     5. SHADOWS & BLURS
+     ========================================================================== */
+  --vk-shadow-warm-sm: 0 4px 20px rgba(109, 26, 43, 0.04);
+  --vk-shadow-warm-md: 0 10px 30px rgba(109, 26, 43, 0.07);
+  --vk-shadow-warm-lg: 0 20px 60px rgba(109, 26, 43, 0.10); /* Standard warm shadow */
+  --vk-shadow-warm-xl: 0 30px 80px rgba(109, 26, 43, 0.15);
+  --vk-shadow-inset-soft: inset 0 1px 2px rgba(22, 17, 18, 0.04);
+
+  --vk-blur-glass: blur(20px);
+  --vk-blur-glass-subtle: blur(12px);
+
+  /* ==========================================================================
+     6. TRANSITIONS & TIMING
+     ========================================================================== */
+  --vk-transition-fast: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  --vk-transition-standard: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  --vk-transition-slow: 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  --vk-transition-editorial: 1100ms cubic-bezier(0.22, 1, 0.36, 1);
+}
