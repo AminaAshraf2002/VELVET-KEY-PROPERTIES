@@ -112,7 +112,7 @@ export function BronzeTimeScrollSection() {
           powerPreference: "high-performance",
         });
         renderer.setSize(width, height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(window.innerWidth < 768 ? 1 : Math.min(window.devicePixelRatio, 2));
         renderer.setClearColor(0x000000, 0);
       } catch {
         renderer = null;
@@ -224,7 +224,7 @@ export function BronzeTimeScrollSection() {
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         renderer.setSize(width, height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(window.innerWidth < 768 ? 1 : Math.min(window.devicePixelRatio, 2));
       }
       handleScroll();
     };
@@ -248,13 +248,10 @@ export function BronzeTimeScrollSection() {
       lastTime = now;
       const time = (now - startTime) / 1000;
 
-      // On touch / mobile screens, lock scroll 1:1 with touch progress to completely eliminate lag and vibration
+      // Physical scroll lerp: smooth interpolation on both mobile and desktop (prevents discrete touch jerking)
       const isMobile = window.innerWidth < 768;
-      if (isMobile) {
-        currentScroll = targetScroll;
-      } else {
-        currentScroll += (targetScroll - currentScroll) * 0.08;
-      }
+      const lerpSpeed = isMobile ? 0.085 : 0.08;
+      currentScroll += (targetScroll - currentScroll) * lerpSpeed;
 
       // Mouse rotation lerp
       mouseX += (targetMouseX - mouseX) * 0.06;
@@ -315,17 +312,21 @@ export function BronzeTimeScrollSection() {
         }
       }
 
-      // Update active slide state ONLY when milestone boundary crossed
+      // Update active slide state with hysteresis deadband to prevent rapid boundary oscillation/jerking
       const s = currentScroll;
-      let targetSlide: 1 | 2 | 3 | 4 = 1;
-      if (s < 0.25) {
-        targetSlide = 1;
-      } else if (s >= 0.25 && s < 0.5) {
-        targetSlide = 2;
-      } else if (s >= 0.5 && s < 0.75) {
-        targetSlide = 3;
-      } else {
-        targetSlide = 4;
+      const current = activeSlideRef.current;
+      let targetSlide: 1 | 2 | 3 | 4 = current;
+
+      if (current === 1) {
+        if (s >= 0.27) targetSlide = 2;
+      } else if (current === 2) {
+        if (s <= 0.22) targetSlide = 1;
+        else if (s >= 0.52) targetSlide = 3;
+      } else if (current === 3) {
+        if (s <= 0.47) targetSlide = 2;
+        else if (s >= 0.77) targetSlide = 4;
+      } else if (current === 4) {
+        if (s <= 0.72) targetSlide = 3;
       }
 
       if (activeSlideRef.current !== targetSlide) {
@@ -387,18 +388,12 @@ export function BronzeTimeScrollSection() {
     <div
       ref={containerRef}
       id="bronze-time-section"
-      className="relative w-full h-[320vh] sm:h-[350vh] bg-[#FBF8F3] border-y border-[#E8DCC8]/40"
+      className="relative w-full h-[360vh] sm:h-[350vh] bg-[#FBF8F3] border-y border-[#E8DCC8]/40"
     >
       {/* STICKY FULLSCREEN VIEWPORT */}
       <div
         ref={stickyRef}
-        className="sticky top-0 h-screen w-full overflow-hidden select-none bg-[#FBF8F3] transform-gpu will-change-transform"
-        style={{
-          transform: "translate3d(0, 0, 0)",
-          WebkitBackfaceVisibility: "hidden",
-          backfaceVisibility: "hidden",
-          willChange: "transform",
-        }}
+        className="sticky top-0 h-screen w-full overflow-hidden select-none bg-[#FBF8F3]"
       >
         {/* =========================================================================
             4 DYNAMIC BACKGROUND IMAGES (CROSSFADE WHEN MILESTONE ANIMATION CHANGES)

@@ -251,7 +251,8 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Mobile: 2 images in 1st row, 1 full-width image in 2nd row | Desktop: 3 images in 1 row */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
               {[
                 {
                   title: "Palm Jumeirah Signature Fronds",
@@ -274,7 +275,11 @@ export default function AboutPage() {
               ].map((card, i) => (
                 <div
                   key={i}
-                  className="group relative h-80 rounded-2xl overflow-hidden border border-[#E8DCC8] shadow-sm flex flex-col justify-end p-6"
+                  className={`group relative rounded-2xl overflow-hidden border border-[#E8DCC8] shadow-sm flex flex-col justify-end p-4 sm:p-6 ${
+                    i === 2
+                      ? "col-span-2 md:col-span-1 h-52 sm:h-80"
+                      : "col-span-1 h-60 sm:h-80"
+                  }`}
                 >
                   <Image
                     src={card.img}
@@ -283,14 +288,14 @@ export default function AboutPage() {
                     className="object-cover group-hover:scale-105 transition-transform duration-700 brightness-90 group-hover:brightness-95"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-                  <div className="relative z-10 space-y-1 text-white">
-                    <span className="label-tracking text-[9px] text-[#E8DCC8] block font-semibold">
+                  <div className="relative z-10 space-y-0.5 sm:space-y-1 text-white">
+                    <span className="label-tracking text-[8px] sm:text-[9px] text-[#E8DCC8] block font-semibold">
                       {card.tag}
                     </span>
-                    <h4 className="font-serif text-xl text-white font-normal leading-snug">
+                    <h4 className="font-serif text-sm sm:text-xl text-white font-normal leading-snug">
                       {card.title}
                     </h4>
-                    <span className="text-[11px] font-mono text-[#E8DCC8] block pt-1">
+                    <span className="text-[10px] sm:text-[11px] font-mono text-[#E8DCC8] block pt-0.5 sm:pt-1">
                       {card.price}
                     </span>
                   </div>
