@@ -356,14 +356,6 @@ export function Footer() {
                     Our Pedigree
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href="/register"
-                    className="hover:text-white transition-colors text-[#E8DCC8]"
-                  >
-                    Member Sanctuary
-                  </Link>
-                </li>
               </ul>
             </div>
 
