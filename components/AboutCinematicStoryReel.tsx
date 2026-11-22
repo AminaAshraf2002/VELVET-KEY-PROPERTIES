@@ -92,6 +92,34 @@ export function AboutCinematicStoryReel() {
 
   const currentChapter = CHAPTERS[activeChapterIndex];
 
+  // Guaranteed immediate video autoplay without static poster/thumbnail
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+    }
+  }, [activeChapterIndex]);
+
+  // Autoplay as soon as video scrolls into view
+  useEffect(() => {
+    if (!videoWrapRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && videoRef.current) {
+            videoRef.current.defaultMuted = true;
+            videoRef.current.muted = true;
+            videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(videoWrapRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   // GSAP Entrance & ScrollTrigger Animation
   useEffect(() => {
     if (!containerRef.current) return;
@@ -251,16 +279,16 @@ export function AboutCinematicStoryReel() {
             ref={videoWrapRef}
             className="relative w-full max-w-[340px] sm:max-w-[360px] aspect-[9/16] rounded-3xl overflow-hidden bg-[#161112] shadow-2xl border-2 border-[#E8DCC8] group"
           >
-            {/* Native Portrait Video */}
+            {/* Native Portrait Video (Autoplays with zero static poster thumbnail) */}
             <video
               ref={videoRef}
               key={currentChapter.videoSrc}
               autoPlay
               loop
-              muted={isMuted}
+              muted
               playsInline
+              preload="auto"
               onTimeUpdate={handleTimeUpdate}
-              poster={currentChapter.poster}
               className="absolute inset-0 w-full h-full object-cover brightness-95 group-hover:scale-105 transition-transform duration-700 ease-out"
             >
               <source src={currentChapter.videoSrc} type="video/mp4" />
