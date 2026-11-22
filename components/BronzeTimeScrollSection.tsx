@@ -236,8 +236,8 @@ export function BronzeTimeScrollSection() {
     // Initial sync
     handleScroll();
 
-    // Cache grid dot DOM nodes once to avoid querying the DOM every frame
-    const dots = Array.from(document.querySelectorAll<HTMLElement>(".vk-grid-dot"));
+    // Pre-cache stories progress dash fill DOM elements to eliminate layout thrashing
+    const dashFills = [1, 2, 3, 4].map((i) => document.getElementById(`vk-dash-fill-${i}`));
 
     // --- ANIMATION LOOP ---
     let animId: number;
@@ -248,10 +248,13 @@ export function BronzeTimeScrollSection() {
       lastTime = now;
       const time = (now - startTime) / 1000;
 
-      // Smooth physical scroll lerp (responsive factor on mobile to prevent rubber-band vibration)
-      const isMobile = window.innerWidth < 640;
-      const lerpSpeed = isMobile ? 0.08 : 0.055;
-      currentScroll += (targetScroll - currentScroll) * lerpSpeed;
+      // On touch / mobile screens, lock scroll 1:1 with touch progress to completely eliminate lag and vibration
+      const isMobile = window.innerWidth < 768;
+      if (isMobile) {
+        currentScroll = targetScroll;
+      } else {
+        currentScroll += (targetScroll - currentScroll) * 0.08;
+      }
 
       // Mouse rotation lerp
       mouseX += (targetMouseX - mouseX) * 0.06;
@@ -259,32 +262,37 @@ export function BronzeTimeScrollSection() {
 
       // Ambient dust motes drift
       if (particles) {
-        const positions = particles.geometry.attributes.position.array as Float32Array;
-        const scrollVelocity = Math.abs(targetScroll - currentScroll);
-        const speedMultiplier = 1.0 + scrollVelocity * 6.0;
+        if (!isMobile) {
+          const positions = particles.geometry.attributes.position.array as Float32Array;
+          const scrollVelocity = Math.abs(targetScroll - currentScroll);
+          const speedMultiplier = 1.0 + scrollVelocity * 6.0;
 
-        for (let i = 0; i < particleCount; i++) {
-          const idx = i * 3;
-          const data = particleData[i];
-          positions[idx] += data.speedX * deltaTime * speedMultiplier;
-          positions[idx + 1] += data.speedY * deltaTime * speedMultiplier;
-          positions[idx + 2] += data.speedZ * deltaTime * speedMultiplier;
+          for (let i = 0; i < particleCount; i++) {
+            const idx = i * 3;
+            const data = particleData[i];
+            positions[idx] += data.speedX * deltaTime * speedMultiplier;
+            positions[idx + 1] += data.speedY * deltaTime * speedMultiplier;
+            positions[idx + 2] += data.speedZ * deltaTime * speedMultiplier;
 
-          const currentSway = data.swayRadius;
-          positions[idx] += Math.sin(time * data.swaySpeed + data.phase) * currentSway * deltaTime;
-          positions[idx + 2] += Math.cos(time * data.swaySpeed + data.phase) * currentSway * deltaTime;
+            const currentSway = data.swayRadius;
+            positions[idx] += Math.sin(time * data.swaySpeed + data.phase) * currentSway * deltaTime;
+            positions[idx + 2] += Math.cos(time * data.swaySpeed + data.phase) * currentSway * deltaTime;
 
-          if (
-            positions[idx + 1] > 3.0 ||
-            Math.abs(positions[idx]) > 3.5 ||
-            Math.abs(positions[idx + 2]) > 3.5
-          ) {
-            positions[idx + 1] = -2.5;
-            positions[idx] = (Math.random() - 0.5) * 3.0;
-            positions[idx + 2] = (Math.random() - 0.5) * 3.0;
+            if (
+              positions[idx + 1] > 3.0 ||
+              Math.abs(positions[idx]) > 3.5 ||
+              Math.abs(positions[idx + 2]) > 3.5
+            ) {
+              positions[idx + 1] = -2.5;
+              positions[idx] = (Math.random() - 0.5) * 3.0;
+              positions[idx + 2] = (Math.random() - 0.5) * 3.0;
+            }
           }
+          particles.geometry.attributes.position.needsUpdate = true;
+        } else {
+          // On mobile, lightweight rotation without geometry buffer re-upload (prevents GPU stall)
+          particles.rotation.y = time * 0.05;
         }
-        particles.geometry.attributes.position.needsUpdate = true;
       }
 
       // Camera parallax
@@ -295,12 +303,12 @@ export function BronzeTimeScrollSection() {
       camera.position.set(camX, camY, camZ);
       camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-      // Update stories progress dashes
-      for (let i = 1; i <= 4; i++) {
-        const fill = document.getElementById(`vk-dash-fill-${i}`);
+      // Update stories progress dashes using pre-cached DOM nodes
+      for (let i = 0; i < 4; i++) {
+        const fill = dashFills[i];
         if (fill) {
-          const start = (i - 1) * 0.25;
-          const end = i * 0.25;
+          const start = i * 0.25;
+          const end = (i + 1) * 0.25;
           let progress = (currentScroll - start) / (end - start);
           progress = Math.max(0, Math.min(1, progress));
           fill.style.height = `${progress * 100}%`;
@@ -324,12 +332,6 @@ export function BronzeTimeScrollSection() {
         activeSlideRef.current = targetSlide;
         setActiveSlide(targetSlide);
       }
-
-      // Update grid dots with GPU translate3d (eliminates layout reflow and vibration)
-      dots.forEach((dot, i) => {
-        const floatY = Math.sin(time * 1.2 + i * 1.5) * 8;
-        dot.style.transform = `translate3d(-50%, ${floatY}px, 0)`;
-      });
 
       renderer?.render(scene, camera);
     };
@@ -390,7 +392,13 @@ export function BronzeTimeScrollSection() {
       {/* STICKY FULLSCREEN VIEWPORT */}
       <div
         ref={stickyRef}
-        className="sticky top-0 h-[100dvh] w-full overflow-hidden select-none bg-[#FBF8F3]"
+        className="sticky top-0 h-screen w-full overflow-hidden select-none bg-[#FBF8F3] transform-gpu will-change-transform"
+        style={{
+          transform: "translate3d(0, 0, 0)",
+          WebkitBackfaceVisibility: "hidden",
+          backfaceVisibility: "hidden",
+          willChange: "transform",
+        }}
       >
         {/* =========================================================================
             4 DYNAMIC BACKGROUND IMAGES (CROSSFADE WHEN MILESTONE ANIMATION CHANGES)
@@ -479,12 +487,10 @@ export function BronzeTimeScrollSection() {
               <React.Fragment key={slide.step}>
                 {/* DEDICATED SLIDE EDITORIAL IMAGE MASK */}
                 <div
-                  className={`absolute top-[5.5rem] sm:top-14 lg:top-16 xl:top-20 ${
-                    isLeft
-                      ? "left-4 sm:left-12 lg:left-16 xl:left-20"
-                      : "right-4 sm:right-12 lg:right-16 xl:right-20"
-                  } w-[12.5rem] sm:w-[15.5rem] lg:w-[18.5rem] xl:w-[21.5rem] 2xl:w-[24.5rem] aspect-square overflow-hidden z-20 pointer-events-none rounded-2xl border border-[#E8DCC8] shadow-[0_20px_50px_rgba(22,17,18,0.12)] transition-all duration-1000 ${
-                    isSlideActive
+                  className={`absolute top-[5.5rem] sm:top-14 lg:top-16 xl:top-20 ${isLeft
+                    ? "left-4 sm:left-12 lg:left-16 xl:left-20"
+                    : "right-4 sm:right-12 lg:right-16 xl:right-20"
+                    } w-[12.5rem] sm:w-[15.5rem] lg:w-[18.5rem] xl:w-[21.5rem] 2xl:w-[24.5rem] aspect-square overflow-hidden z-20 pointer-events-none rounded-2xl border border-[#E8DCC8] shadow-[0_20px_50px_rgba(22,17,18,0.12)] transition-all duration-1000 ${isSlideActive
                       ? "opacity-100 scale-100"
                       : "opacity-0 scale-105"
                     }`}
@@ -509,11 +515,10 @@ export function BronzeTimeScrollSection() {
 
                 {/* SLIDE TEXT CONTENT (Balanced editorial layout on mobile) */}
                 <div
-                  className={`absolute top-[49%] sm:top-auto sm:bottom-[6%] lg:bottom-[8%] xl:bottom-[10%] 2xl:bottom-[12%] left-0 w-full transition-opacity duration-700 pointer-events-none ${
-                    isSlideActive
-                      ? "opacity-100 pointer-events-auto"
-                      : "opacity-0 pointer-events-none"
-                  }`}
+                  className={`absolute top-[49%] sm:top-auto sm:bottom-[6%] lg:bottom-[8%] xl:bottom-[10%] 2xl:bottom-[12%] left-0 w-full transition-opacity duration-700 pointer-events-none ${isSlideActive
+                    ? "opacity-100 pointer-events-auto"
+                    : "opacity-0 pointer-events-none"
+                    }`}
                 >
                   <div
                     className={`${isLeft

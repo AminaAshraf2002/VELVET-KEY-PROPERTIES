@@ -38,18 +38,29 @@ export function HeroVideo3D({
   const [activeDropdown, setActiveDropdown] = useState<
     "district" | "type" | "price" | "beds" | null
   >(null);
-  const [isMobilePopupOpen, setIsMobilePopupOpen] = useState(false);
+  const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
 
-  // Auto-popup filter on mobile after 3 seconds of opening website
+  // Auto-popup filter after 3 seconds of opening website (Desktop & Mobile)
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.innerWidth >= 640) return;
 
     const popupTimer = setTimeout(() => {
-      setIsMobilePopupOpen(true);
+      setIsFilterPopupOpen(true);
     }, 3000);
 
     return () => clearTimeout(popupTimer);
+  }, []);
+
+  // Keyboard Escape listener to dismiss popup
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsFilterPopupOpen(false);
+        setActiveDropdown(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   // Auto-close dropdown when clicking outside
@@ -858,65 +869,62 @@ export function HeroVideo3D({
 
         {/* =========================================================================
             4. FOREGROUND HERO CONTENT
-            Mobile: Sleek Trigger Button
-            Desktop: Pinned Inline Filter Dock
+            Search Residences Trigger Dock (Desktop & Mobile)
             ========================================================================= */}
         <div
           ref={contentRef}
           className="relative z-30 max-w-6xl min-[1600px]:max-w-7xl mx-auto w-full px-3.5 sm:px-8 mt-auto pb-4 sm:pb-8 lg:pb-10 min-[1600px]:pb-14 flex flex-col justify-end items-center text-center"
         >
-          {/* Mobile Search Button (Visible when popup is closed) */}
-          <div className="sm:hidden w-full flex justify-center pb-1">
+          {/* Search Trigger Button (Desktop & Mobile) */}
+          <div ref={filterCardRef} className="w-full flex justify-center pb-1">
             <button
               type="button"
-              onClick={() => setIsMobilePopupOpen(true)}
-              className="inline-flex items-center gap-2 bg-[#6D1A2B] hover:bg-[#4A0F1C] text-white px-5 py-2.5 text-[11px] font-gilmoray uppercase tracking-[0.2em] shadow-xl transition-all cursor-pointer active:scale-95 border border-[#E8DCC8]/40"
+              onClick={() => setIsFilterPopupOpen(true)}
+              className="inline-flex items-center gap-2 sm:gap-3 bg-[#6D1A2B] hover:bg-[#4A0F1C] text-white px-5 sm:px-8 py-2.5 sm:py-3.5 text-[11px] sm:text-xs min-[1600px]:text-[13px] font-gilmoray uppercase tracking-[0.2em] shadow-2xl transition-all cursor-pointer hover:scale-[1.02] active:scale-95 border border-[#E8DCC8]/40 backdrop-blur-md"
               style={{ fontFamily: "var(--font-gilmoray), 'Gilmoray', serif" }}
             >
-              <svg className="w-3.5 h-3.5 text-[#E8DCC8]" viewBox="0 0 512 512" fill="currentColor">
+              <svg className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-[#E8DCC8]" viewBox="0 0 512 512" fill="currentColor">
                 <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
               </svg>
               <span>Search Residences</span>
-              <span className="text-[#E8DCC8] text-[9px]">◆</span>
+              <span className="text-[#E8DCC8] text-[9px] sm:text-[10px]">◆</span>
+              <span className="hidden sm:inline-block text-[11px] font-mono tracking-widest text-[#E8DCC8]/80 pl-1 border-l border-white/20">
+                84 Curated Portfolios
+              </span>
             </button>
-          </div>
-
-          {/* Desktop Floating Luxury Search Bar (Hidden on Mobile) */}
-          <div
-            ref={filterCardRef}
-            className="filter-dropdown-container hidden sm:block w-full max-w-[960px] min-[1600px]:max-w-[1180px] bg-white/95 backdrop-blur-2xl p-3 sm:p-3.5 min-[1600px]:p-5 rounded-none border border-[#E8DCC8] shadow-[0_20px_60px_rgba(22,17,18,0.25)] space-y-2 sm:space-y-2.5 min-[1600px]:space-y-3.5 text-left font-outfit select-none relative z-40"
-          >
-            {renderFilterFields()}
           </div>
         </div>
       </div>
 
       {/* =========================================================================
-          5. MOBILE 3-SECOND POPUP FILTER MODAL
+          5. 3-SECOND POPUP FILTER MODAL (Desktop & Mobile)
           ========================================================================= */}
-      {isMobilePopupOpen && (
+      {isFilterPopupOpen && (
         <div
-          className="sm:hidden fixed inset-0 z-[120] flex items-end justify-center bg-black/65 backdrop-blur-xs p-3 transition-opacity duration-300"
+          className="fixed inset-0 z-[120] flex items-end sm:items-center justify-center bg-black/60 sm:bg-black/65 backdrop-blur-sm p-3 sm:p-6 transition-opacity duration-300 animate-in fade-in"
           onClick={(e) => {
-            if (e.target === e.currentTarget) setIsMobilePopupOpen(false);
+            if (e.target === e.currentTarget) setIsFilterPopupOpen(false);
           }}
         >
-          <div className="filter-dropdown-container relative w-full max-h-[88vh] overflow-y-auto bg-white p-3.5 rounded-none border border-[#6D1A2B]/40 shadow-2xl animate-in slide-in-from-bottom duration-300 space-y-3">
+          <div className="filter-dropdown-container relative w-full max-w-5xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto bg-white/98 backdrop-blur-2xl p-4 sm:p-6 rounded-none border border-[#6D1A2B]/40 shadow-[0_25px_70px_rgba(22,17,18,0.35)] animate-in zoom-in-95 sm:zoom-in-95 slide-in-from-bottom sm:slide-in-from-bottom-0 duration-300 space-y-4">
             {/* Modal Header with Title & Close ✕ */}
-            <div className="flex items-center justify-between border-b border-[#E8DCC8]/80 pb-2">
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-[#6D1A2B] rotate-45" />
+            <div className="flex items-center justify-between border-b border-[#E8DCC8]/80 pb-3">
+              <div className="flex items-center gap-2.5">
+                <span className="w-2 h-2 bg-[#6D1A2B] rotate-45" />
                 <span
-                  className="font-gilmoray text-xs uppercase tracking-[0.18em] text-[#161112] font-semibold"
+                  className="font-gilmoray text-xs sm:text-sm uppercase tracking-[0.2em] text-[#161112] font-semibold"
                   style={{ fontFamily: "var(--font-gilmoray), 'Gilmoray', serif" }}
                 >
                   CURATED RESIDENCES SEARCH
                 </span>
+                <span className="hidden sm:inline-block text-[10px] font-mono uppercase tracking-widest text-[#6B6265] bg-[#FBF8F3] px-2 py-0.5 border border-[#E8DCC8]">
+                  Ultra-Prime Dubai
+                </span>
               </div>
               <button
                 type="button"
-                onClick={() => setIsMobilePopupOpen(false)}
-                className="w-7 h-7 flex items-center justify-center rounded-none bg-[#FBF8F3] hover:bg-[#6D1A2B] hover:text-white text-[#161112] text-xs transition-colors cursor-pointer border border-[#E8DCC8]"
+                onClick={() => setIsFilterPopupOpen(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-none bg-[#FBF8F3] hover:bg-[#6D1A2B] hover:text-white text-[#161112] text-sm transition-colors cursor-pointer border border-[#E8DCC8]"
                 aria-label="Close search filters"
               >
                 ✕
