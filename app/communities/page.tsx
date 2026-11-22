@@ -66,8 +66,8 @@ export default function CommunitiesPage() {
         breadcrumbs={[{ label: "HOME", href: "/" }, { label: "COMMUNITIES" }]}
       />
 
-      <main className="min-h-screen bg-[#FBF8F3] pt-6 sm:pt-12 pb-24 px-4 sm:px-6 lg:px-8 text-[#161112]">
-        <div ref={containerRef} className="max-w-7xl mx-auto space-y-12">
+      <main className="min-h-screen bg-[#FBF8F3] pt-6 sm:pt-12 pb-24 px-2.5 sm:px-6 lg:px-8 text-[#161112]">
+        <div ref={containerRef} className="max-w-7xl mx-auto space-y-8 sm:space-y-12">
           {/* Communities Cards Stack with GSAP Entrance */}
           {COMMUNITIES.map((c, idx) => {
             const districtProperties = PROPERTIES.filter((p) => p.district === c.name);
@@ -77,7 +77,7 @@ export default function CommunitiesPage() {
               <div
                 key={c.id}
                 id={c.id}
-                className="enclave-card bg-white rounded-3xl border border-[#E8DCC8] p-8 sm:p-12 shadow-sm hover:shadow-lg transition-all duration-300 space-y-8"
+                className="enclave-card bg-white rounded-2xl sm:rounded-3xl border border-[#E8DCC8] p-4 sm:p-8 lg:p-12 shadow-sm hover:shadow-lg transition-all duration-300 space-y-6 sm:space-y-8"
               >
                 {/* Header Row */}
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 border-b border-[#E8DCC8]/60 pb-6">
@@ -176,22 +176,22 @@ export default function CommunitiesPage() {
                         VERIFIED ALLOCATIONS IN {c.name.toUpperCase()} ({districtProperties.length})
                       </span>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
                       {districtProperties.map((p) => (
                         <Link
                           key={p.id}
                           href={`/property/${p.id}`}
-                          className="p-4 rounded-2xl bg-[#FBF8F3] border border-[#E8DCC8] hover:border-[#6D1A2B] hover:bg-white transition-all flex justify-between items-center group/item shadow-2xs"
+                          className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-[#FBF8F3] border border-[#E8DCC8] hover:border-[#6D1A2B] hover:bg-white transition-all flex flex-col justify-between group/item shadow-2xs gap-1.5"
                         >
                           <div>
-                            <span className="font-serif text-base font-semibold text-[#161112] group-hover/item:text-[#6D1A2B] transition-colors block">
+                            <span className="font-serif text-xs sm:text-base font-semibold text-[#161112] group-hover/item:text-[#6D1A2B] transition-colors block line-clamp-1">
                               {p.title}
                             </span>
-                            <span className="text-xs text-[#6B6265]">
+                            <span className="text-[10px] sm:text-xs text-[#6B6265] block">
                               {p.bedrooms} Beds · {p.builtUpSqFt.toLocaleString()} sq ft
                             </span>
                           </div>
-                          <span className="font-serif font-bold text-sm text-[#6D1A2B] shrink-0 ml-3">
+                          <span className="font-serif font-bold text-xs sm:text-sm text-[#6D1A2B] shrink-0 mt-0.5">
                             AED {(p.priceAED / 1000000).toFixed(1)}M →
                           </span>
                         </Link>

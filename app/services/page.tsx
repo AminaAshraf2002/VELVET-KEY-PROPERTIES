@@ -262,29 +262,29 @@ export default function ServicesPage() {
             ========================================================================= */}
         <section
           ref={metricsSectionRef}
-          className="bg-[#161112] text-white py-12 sm:py-16 border-y border-[#E8DCC8]/20 relative z-10"
+          className="bg-[#161112] text-white py-10 sm:py-16 border-y border-[#E8DCC8]/20 relative z-10"
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
+          <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 divide-y-0 sm:divide-x divide-white/10">
               {METRICS_CONFIG.map((metric, idx) => (
                 <div
                   key={metric.label}
-                  className={`flex flex-col items-center text-center ${
-                    idx > 0 ? "pt-6 sm:pt-0 sm:pl-6" : ""
+                  className={`flex flex-col items-center text-center p-2 sm:p-0 ${
+                    idx > 0 ? "sm:pl-6" : ""
                   }`}
                 >
                   <span
                     ref={(el) => {
                       metricNumberRefs.current[idx] = el;
                     }}
-                    className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#E8DCC8] tracking-tight mb-1"
+                    className="font-serif text-2xl sm:text-4xl lg:text-5xl text-[#E8DCC8] tracking-tight mb-1"
                   >
                     {metric.prefix}0{metric.suffix}
                   </span>
-                  <span className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-white/90 mb-1">
+                  <span className="text-[11px] sm:text-sm font-semibold uppercase tracking-[0.18em] sm:tracking-[0.2em] text-white/90 mb-1">
                     {metric.label}
                   </span>
-                  <span className="text-[11px] font-mono text-white/50">
+                  <span className="text-[10px] sm:text-[11px] font-mono text-white/50">
                     {metric.note}
                   </span>
                 </div>
@@ -298,23 +298,23 @@ export default function ServicesPage() {
             ========================================================================= */}
         <div
           ref={containerRef}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 space-y-16 sm:space-y-24"
+          className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-12 sm:py-24 space-y-12 sm:space-y-24"
         >
-          <div className="max-w-3xl mx-auto text-center space-y-4">
+          <div className="max-w-3xl mx-auto text-left sm:text-center space-y-3 sm:space-y-4">
             <span className="label-tracking text-[#9B2640] block">
               THE VELVET KEY ADVANTAGE
             </span>
-            <div className="inline-block border-l-[3.5px] border-solid border-[#6D1A2B] pl-3.5 sm:pl-4 text-left section-title-burgundy">
+            <div className="border-l-[3.5px] border-solid border-[#6D1A2B] pl-3.5 sm:pl-4 text-left sm:inline-block section-title-burgundy">
               <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl tracking-[0.05em] uppercase text-[#161112]" style={{ fontFamily: "var(--font-optima), 'Optima', sans-serif", fontWeight: 400 }}>
                 Uncompromising Standard in Dubai Real Estate
               </h2>
             </div>
-            <p className="text-sm sm:text-base text-[#6B6265] leading-relaxed">
+            <p className="text-sm sm:text-base text-[#6B6265] leading-relaxed text-left sm:text-center">
               We operate not as transactional agents, but as trusted fiduciaries. Every mandate is executed with unmatched market intelligence, discretion, and access to Dubai&apos;s most coveted residential inventory.
             </p>
           </div>
 
-          <div className="space-y-16 sm:space-y-20">
+          <div className="space-y-12 sm:space-y-20">
             {LUXURY_SERVICES.map((service, index) => {
               const isEven = index % 2 === 0;
               const isHovered = hoveredCardId === service.id;
@@ -331,7 +331,7 @@ export default function ServicesPage() {
                   data-cursor="ADVISORY"
                   className={`service-card-entry flex flex-col ${
                     isEven ? "lg:flex-row" : "lg:flex-row-reverse"
-                  } gap-8 sm:gap-12 lg:gap-16 items-center bg-white rounded-3xl p-6 sm:p-10 lg:p-12 border transition-all duration-500 ease-out ${
+                  } gap-6 sm:gap-12 lg:gap-16 items-center bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-10 lg:p-12 border transition-all duration-500 ease-out ${
                     isHovered
                       ? "border-[#6D1A2B] shadow-[0_25px_70px_rgba(109,26,43,0.15)] scale-[1.01] z-10"
                       : isOtherHovered

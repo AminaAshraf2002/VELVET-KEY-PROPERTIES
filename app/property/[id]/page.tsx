@@ -56,7 +56,7 @@ export default async function PropertyDetailPage({
       <CustomCursor />
       <Navbar forceSolid={true} />
 
-      <main className="min-h-screen bg-[#FBF8F3] pt-16 sm:pt-28 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 text-[#161112]">
+      <main className="min-h-screen bg-[#FBF8F3] pt-16 sm:pt-28 pb-16 sm:pb-24 px-3 sm:px-6 lg:px-8 text-[#161112]">
         <div className="max-w-7xl mx-auto space-y-6 sm:space-y-10">
           {/* Breadcrumb Navigation */}
           <div className="flex items-center gap-2 text-xs text-[#6B6265]">
@@ -251,16 +251,16 @@ export default async function PropertyDetailPage({
                 </div>
               </div>
 
-              <div className="bg-white p-8 rounded-3xl border border-[#E8DCC8] shadow-sm space-y-6">
-                <h2 className="font-serif text-2xl text-[#161112]">Lifestyle & Private Amenities</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="bg-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-[#E8DCC8] shadow-sm space-y-5 sm:space-y-6">
+                <h2 className="font-serif text-xl sm:text-2xl text-[#161112]">Lifestyle & Private Amenities</h2>
+                <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
                   {property.amenities.map((amenity, idx) => (
                     <div
                       key={idx}
-                      className="p-4 rounded-xl bg-[#FBF8F3] border border-[#E8DCC8]/60 flex items-center gap-3 text-xs font-semibold text-[#161112]"
+                      className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-[#FBF8F3] border border-[#E8DCC8]/60 flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-semibold text-[#161112]"
                     >
-                      <span className="text-[#6D1A2B] text-base">✦</span>
-                      <span>{amenity}</span>
+                      <span className="text-[#6D1A2B] text-sm sm:text-base shrink-0">✦</span>
+                      <span className="leading-snug">{amenity}</span>
                     </div>
                   ))}
                 </div>

@@ -107,13 +107,13 @@ export default function OffPlanPage() {
         breadcrumbs={[{ label: "HOME", href: "/" }, { label: "OFF-PLAN VAULT" }]}
       />
 
-      <main className="min-h-screen bg-[#FBF8F3] pt-6 sm:pt-12 pb-24 px-4 sm:px-6 lg:px-8 text-[#161112]">
-        <div ref={containerRef} className="max-w-7xl mx-auto space-y-12">
+      <main className="min-h-screen bg-[#FBF8F3] pt-6 sm:pt-12 pb-24 px-2.5 sm:px-6 lg:px-8 text-[#161112]">
+        <div ref={containerRef} className="max-w-7xl mx-auto space-y-8 sm:space-y-12">
           {/* Projects Stack */}
           {projects.map((proj, idx) => (
             <div
               key={idx}
-              className="offplan-card bg-white rounded-3xl border border-[#E8DCC8] p-8 sm:p-12 shadow-sm hover:shadow-lg transition-all duration-300 space-y-8"
+              className="offplan-card bg-white rounded-2xl sm:rounded-3xl border border-[#E8DCC8] p-4 sm:p-8 lg:p-12 shadow-sm hover:shadow-lg transition-all duration-300 space-y-6 sm:space-y-8"
             >
               <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 border-b border-[#E8DCC8]/60 pb-6">
                 <div>
@@ -160,19 +160,19 @@ export default function OffPlanPage() {
                     <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#161112] block font-semibold">
                       PAYMENT SCHEDULE & ESCROW MILESTONES
                     </span>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
                       {proj.milestones.map((m, mIdx) => (
                         <div
                           key={mIdx}
-                          className="p-4 rounded-2xl bg-[#FBF8F3] border border-[#E8DCC8] space-y-1"
+                          className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-[#FBF8F3] border border-[#E8DCC8] space-y-0.5 sm:space-y-1"
                         >
-                          <span className="font-serif text-2xl font-bold text-[#6D1A2B] block">
+                          <span className="font-serif text-xl sm:text-2xl font-bold text-[#6D1A2B] block">
                             {m.pct}
                           </span>
-                          <span className="text-xs font-semibold text-[#161112] block">
+                          <span className="text-[11px] sm:text-xs font-semibold text-[#161112] block leading-tight">
                             {m.name}
                           </span>
-                          <span className="text-[10px] text-[#6B6265] font-mono block">
+                          <span className="text-[9px] sm:text-[10px] text-[#6B6265] font-mono block">
                             {m.timing}
                           </span>
                         </div>
